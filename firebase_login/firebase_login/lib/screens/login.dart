@@ -32,8 +32,9 @@ class Authpage extends StatelessWidget {
                     children: <Widget>[
                       TextFormField(
                         controller: _emailController,
-                        decoration:
-                            InputDecoration(icon: Icon(Icons.account_circle)),
+                        decoration: InputDecoration(
+                            icon: Icon(Icons.account_circle),
+                            labelText: "Email"),
                       ),
                       TextFormField(
                         controller: _passwordController,
