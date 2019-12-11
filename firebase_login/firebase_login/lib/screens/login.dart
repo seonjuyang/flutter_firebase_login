@@ -10,56 +10,78 @@ class Authpage extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-        body: Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        Container(
-          color: Colors.white,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Container(
-              width: 200,
               height: 200,
-              color: Colors.blue,
-            ),
-            Stack(
-              children: <Widget>[
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.account_circle),
-                            labelText: "Email"),
+      body: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          Container(
+            color: Colors.white,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Container(
+                width: 200,
+                height: 200,
+                color: Colors.blue,
+              ),
+              Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(size.width * 0.05),
+                    child: Card(
+                      elevation: 6,
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            TextFormField(
+                              controller: _emailController,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.account_circle),
+                                  labelText: "Email"),
+                              validator: (String value) {
+                                if (value.isEmpty) {
+                                  return "Please input correct Email.";
+                                }
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              controller: _passwordController,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.vpn_key),
+                                  labelText: "Password"),
+                              validator: (String value) {
+                                if (value.isEmpty) {
+                                  return "Please input correct Password.";
+                                }
+                                return null;
+                              },
+                            ),
+                            Container(
+                              height: 8,
+                            ),
+                            Text("Forgot Password?")
+                          ],
+                        ),
                       ),
-                      TextFormField(
-                        controller: _passwordController,
-                      ),
-                      Text("Forgot Password?")
-                    ],
+                    ),
                   ),
-                ),
-                // Container(
-                //   width: 100,
-                //   height: 50,
-                //   color: Colors.black,
-                // )
-              ],
-            ),
-            Container(
-              height: size.height * 0.1,
-            ),
-            Text("Don't have Account? Create one!"),
-            Container(
-              height: size.height * 0.05,
-            )
-          ],
-        )
-      ],
-    ));
+                ],
+              ),
+              Container(
+                height: size.height * 0.1,
+              ),
+              Text("Don't have Account? Create one!"),
+              Container(
+                height: size.height * 0.05,
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
