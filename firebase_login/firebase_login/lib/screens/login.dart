@@ -1,3 +1,4 @@
+import 'package:firebase_login/helper/login_background.dart';
 import 'package:flutter/material.dart';
 
 class Authpage extends StatelessWidget {
@@ -13,17 +14,15 @@ class Authpage extends StatelessWidget {
       body: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          Container(
-            color: Colors.white,
+          CustomPaint(
+            size: size,
+            painter: LoginBackground(),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              FadeInImage.assetNetwork(
-                placeholder: "assets/loading.gif",
-                image: "https://picsum.photos/200",
-              ),
+              _logoImage,
               Stack(
                 children: <Widget>[
                   _inputForm(size),
@@ -44,16 +43,36 @@ class Authpage extends StatelessWidget {
     );
   }
 
+  Widget get _logoImage => Expanded(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 40, left: 24, right: 24),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage("https://picsum.photos/200"),
+            ),
+          ),
+        ),
+      );
+
   Widget _authBotton(Size size) => Positioned(
         left: size.width * 0.15,
         right: size.width * 0.15,
         bottom: 0,
-        child: RaisedButton(
-          child: Text("Login"),
-          color: Colors.blue,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          onPressed: () {},
+        child: SizedBox(
+          height: 50,
+          child: RaisedButton(
+            child: Text("Login",
+                style: TextStyle(fontSize: 20, color: Colors.white)),
+            color: Colors.blue,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            onPressed: () {
+              if (_formKey.currentState.validate()) {
+                print(_passwordController.text.toString());
+              }
+            },
+          ),
         ),
       );
 
@@ -83,6 +102,7 @@ class Authpage extends StatelessWidget {
                     },
                   ),
                   TextFormField(
+                    obscureText: true,
                     controller: _passwordController,
                     decoration: InputDecoration(
                         icon: Icon(Icons.vpn_key), labelText: "Password"),
