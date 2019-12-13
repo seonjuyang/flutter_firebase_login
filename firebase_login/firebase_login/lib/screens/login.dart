@@ -1,5 +1,7 @@
+import 'package:firebase_login/data/join_or_login.dart';
 import 'package:firebase_login/helper/login_background.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Authpage extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -11,36 +13,45 @@ class Authpage extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Stack(
-        alignment: Alignment.center,
+        body: Stack(alignment: Alignment.center, children: <Widget>[
+      CustomPaint(
+        size: size,
+        painter:
+            LoginBackground(isJoin: Provider.of<JoinOrLogin>(context).isJoin),
+      ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          CustomPaint(
-            size: size,
-            painter: LoginBackground(),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
+          _logoImage,
+          Stack(
             children: <Widget>[
-              _logoImage,
-              Stack(
-                children: <Widget>[
-                  _inputForm(size),
-                  _authBotton(size),
-                ],
-              ),
-              Container(
-                height: size.height * 0.1,
-              ),
-              Text("Don't have Account? Create one!"),
-              Container(
-                height: size.height * 0.05,
-              )
+              _inputForm(size),
+              _authBotton(size),
             ],
+          ),
+          Container(
+            height: size.height * 0.1,
+          ),
+          Consumer<JoinOrLogin>(
+            builder: (context, joinOrLogin, child) => GestureDetector(
+                onTap: () {
+                  joinOrLogin.toggle();
+                },
+                child: Text(
+                  joinOrLogin.isJoin
+                      ? "Already have an Accoount? Sign in!"
+                      : "Don't have an Account? Create one!",
+                  style: TextStyle(
+                      color: joinOrLogin.isJoin ? Colors.red : Colors.blue),
+                )),
+          ),
+          Container(
+            height: size.height * 0.05,
           )
         ],
-      ),
-    );
+      )
+    ]));
   }
 
   Widget get _logoImage => Expanded(
@@ -49,7 +60,7 @@ class Authpage extends StatelessWidget {
           child: FittedBox(
             fit: BoxFit.contain,
             child: CircleAvatar(
-              backgroundImage: NetworkImage("https://picsum.photos/200"),
+              backgroundImage: AssetImage("assets/login.gif"),
             ),
           ),
         ),
@@ -61,17 +72,19 @@ class Authpage extends StatelessWidget {
         bottom: 0,
         child: SizedBox(
           height: 50,
-          child: RaisedButton(
-            child: Text("Login",
-                style: TextStyle(fontSize: 20, color: Colors.white)),
-            color: Colors.blue,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                print(_passwordController.text.toString());
-              }
-            },
+          child: Consumer<JoinOrLogin>(
+            builder: (context, joinOrLogin, child) => RaisedButton(
+              child: Text(joinOrLogin.isJoin ? "Join" : "Login",
+                  style: TextStyle(fontSize: 20, color: Colors.white)),
+              color: joinOrLogin.isJoin ? Colors.red : Colors.blue,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25)),
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  print(_passwordController.text.toString());
+                }
+              },
+            ),
           ),
         ),
       );
@@ -116,7 +129,11 @@ class Authpage extends StatelessWidget {
                   Container(
                     height: 8,
                   ),
-                  Text("Forgot Password?")
+                  Consumer<JoinOrLogin>(
+                    builder: (context, value, child) => Opacity(
+                        opacity: value.isJoin ? 0 : 1,
+                        child: Text("Forgot Password?")),
+                  )
                 ],
               ),
             ),
