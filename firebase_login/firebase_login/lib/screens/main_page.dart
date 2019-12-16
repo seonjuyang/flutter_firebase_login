@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_login/main.dart';
- 
+import 'firebase';
 class Mainpage extends StatelessWidget {
 
   MainPage({this.email});
@@ -17,7 +16,7 @@ class Mainpage extends StatelessWidget {
       body: Container(
         child:Center(
           child: FlatButton(onPressed: (){
-            FirebaseLogin
+            FirebaseLogin.instance.signOut()
           }, child:Text("Logout")))
       ),
     );
