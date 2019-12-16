@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'firebase';
 class Mainpage extends StatelessWidget {
 
   MainPage({this.email});
