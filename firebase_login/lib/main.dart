@@ -6,9 +6,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: Container(color: Colors.blue,),
-      )
-    );
-
+        home: Scaffold(
+      body: Container(
+        color: Colors.blue,
+      ),
+    ));
+  }
 }
